@@ -24,8 +24,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     final db = context.watch<DatabaseProvider>();
 
-    if (db.isLoading || !db.isLoaded) {
+    if (db.isLoading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if (db.error != null || !db.isLoaded) {
+      return DatabaseLoadErrorView(
+        message: db.error ?? 'The bundled cable database is unavailable.',
+        onRetry: db.load,
+      );
     }
 
     final families = db.families;
@@ -53,6 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     final segments = _mode == _ChartMode.family ? familySegments : materialSegments;
 
     return ListView(
+      key: const Key('dashboard_screen'),
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       children: [
         _HeroCard(recordCount: db.recordCount),

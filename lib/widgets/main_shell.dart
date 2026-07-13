@@ -89,19 +89,19 @@ class _MainShellState extends State<MainShell> {
         onDestinationSelected: _goTo,
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.grid_view_rounded),
+            icon: Icon(Icons.grid_view_rounded, key: Key('nav_dashboard')),
             label: 'Dashboard',
           ),
           NavigationDestination(
-            icon: Icon(Icons.bolt_rounded),
+            icon: Icon(Icons.bolt_rounded, key: Key('nav_quick')),
             label: 'Quick',
           ),
           NavigationDestination(
-            icon: Icon(Icons.engineering_rounded),
+            icon: Icon(Icons.engineering_rounded, key: Key('nav_detail')),
             label: 'Detail',
           ),
           NavigationDestination(
-            icon: Icon(Icons.search_rounded),
+            icon: Icon(Icons.search_rounded, key: Key('nav_lookup')),
             label: 'Lookup',
           ),
         ],

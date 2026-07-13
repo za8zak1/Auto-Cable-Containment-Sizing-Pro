@@ -66,9 +66,7 @@ repository is uploaded, GitHub Actions will:
 4. build `app-release.apk`, and
 5. publish the APK as a downloadable workflow artifact.
 
-See `GITHUB_UPLOAD_GUIDE.md` for browser and command-line upload steps. For a
-local Windows setup, run `tools\bootstrap_flutter.bat`; on macOS/Linux, run
-`./tools/bootstrap_flutter.sh`.
+Browser and command-line upload steps are included below. For a local Windows setup, run `tools\bootstrap_flutter.bat`; on macOS/Linux, run `./tools/bootstrap_flutter.sh`.
 
 ## Project structure
 
@@ -85,7 +83,7 @@ lib/
   theme/          # AppColors / AppTheme
 assets/data/      # cable_database_sample.json (placeholder - see above)
 android/          # standard Flutter Android embedding v2 project
-test/             # widget smoke tests
+test/             # calculation, database-asset, and widget navigation tests
 ```
 
 The calculation engine (`lib/services/cable_sizing_service.dart`) has no
@@ -124,6 +122,19 @@ field mapping. If you rename the file, update the `assets:` entry in
 
 ## Publishing to GitHub
 
+### Browser method
+
+1. Create an empty GitHub repository. Do not add a README, license, or `.gitignore` because they already exist in this package.
+2. Extract the ZIP on your computer.
+3. In the repository, choose **Add file → Upload files**.
+4. Upload the **contents inside** `auto_cable_sizing_pro/`, not the outer folder. The repository root must show `pubspec.yaml`, `lib/`, `android/`, `assets/`, and `.github/`.
+5. Commit to `main`, then open **Actions → Flutter Android CI**.
+6. After the workflow passes, download `auto-cable-sizing-pro-apk` from the run's **Artifacts** section.
+
+Confirm that `.github/workflows/flutter_android.yml` is present. GitHub Actions will not appear without that hidden folder.
+
+### Command-line method
+
 ```bash
 git init
 git add .
@@ -131,6 +142,20 @@ git commit -m "Initial commit - Auto Cable Sizing Pro (Flutter)"
 git branch -M main
 git remote add origin https://github.com/<your-username>/auto-cable-sizing-pro.git
 git push -u origin main
+```
+
+### Local validation
+
+Windows:
+
+```bat
+tools\bootstrap_flutter.bat
+```
+
+macOS/Linux:
+
+```bash
+./tools/bootstrap_flutter.sh
 ```
 
 ## Design-assist notice

@@ -11,24 +11,45 @@ void main() {
 }
 
 class AutoCableSizingProApp extends StatelessWidget {
-  const AutoCableSizingProApp({super.key});
+  final ThemeProvider? themeProvider;
+  final DatabaseProvider? databaseProvider;
+  final DesignProvider? designProvider;
+
+  const AutoCableSizingProApp({
+    super.key,
+    this.themeProvider,
+    this.databaseProvider,
+    this.designProvider,
+  });
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => ThemeProvider()),
-        ChangeNotifierProvider(create: (_) => DatabaseProvider()..load()),
-        ChangeNotifierProvider(create: (_) => DesignProvider()),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (_) => themeProvider ?? ThemeProvider(),
+        ),
+        ChangeNotifierProvider<DatabaseProvider>(
+          create: (_) {
+            final provider = databaseProvider ?? DatabaseProvider();
+            if (!provider.isLoaded && !provider.isLoading) {
+              provider.load();
+            }
+            return provider;
+          },
+        ),
+        ChangeNotifierProvider<DesignProvider>(
+          create: (_) => designProvider ?? DesignProvider(),
+        ),
       ],
       child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) {
+        builder: (context, provider, _) {
           return MaterialApp(
             title: 'Auto Cable Sizing Pro',
             debugShowCheckedModeBanner: false,
             theme: AppTheme.light(),
             darkTheme: AppTheme.dark(),
-            themeMode: themeProvider.themeMode,
+            themeMode: provider.themeMode,
             home: const MainShell(),
           );
         },

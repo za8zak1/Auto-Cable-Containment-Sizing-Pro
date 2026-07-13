@@ -65,6 +65,7 @@ class _QuickDesignScreenState extends State<QuickDesignScreen> {
     final input = design.input;
 
     return ListView(
+      key: const Key('quick_design_screen'),
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       children: [
         _ResultHero(active: active, input: input),

@@ -80,6 +80,7 @@ class _DetailedDesignScreenState extends State<DetailedDesignScreen> {
     final input = design.input;
 
     return ListView(
+      key: const Key('detailed_design_screen'),
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
       children: [
         _ResultHeroDetailed(active: active, input: input),

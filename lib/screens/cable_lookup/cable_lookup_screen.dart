@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../providers/database_provider.dart';
 import '../../models/cable_record.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/common_widgets.dart';
 
 class CableLookupScreen extends StatefulWidget {
   const CableLookupScreen({super.key});
@@ -20,8 +21,14 @@ class _CableLookupScreenState extends State<CableLookupScreen> {
   Widget build(BuildContext context) {
     final db = context.watch<DatabaseProvider>();
 
-    if (!db.isLoaded) {
+    if (db.isLoading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if (db.error != null || !db.isLoaded) {
+      return DatabaseLoadErrorView(
+        message: db.error ?? 'The bundled cable database is unavailable.',
+        onRetry: db.load,
+      );
     }
 
     var results = db.records.where((c) {
@@ -37,6 +44,7 @@ class _CableLookupScreenState extends State<CableLookupScreen> {
     results.sort((a, b) => a.sizeSqmm.compareTo(b.sizeSqmm));
 
     return Column(
+      key: const Key('lookup_screen'),
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
